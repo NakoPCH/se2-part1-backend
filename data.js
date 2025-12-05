@@ -30,6 +30,18 @@ export const users = [
     "username": "okanako",
     "password": "1234",
     "email": "okanpala@ece.auth.gr"
+  },
+  {
+    "id": "u6",
+    "username": "krghrg",
+    "password": "fjagkrfgr",
+    "email": "jfjr@gmail.com"
+  },
+  {
+    "id": "u7",
+    "username": "kyriaki",
+    "password": "123456789",
+    "email": "kyriakipa@ece.auth.gr"
   }
 ];
 export const houses = [
