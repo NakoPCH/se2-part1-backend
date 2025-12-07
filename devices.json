@@ -27,15 +27,6 @@
     "color": "#ffffff"
   },
   {
-    "id": "1764913853440",
-    "name": "living room light 2",
-    "category": "lamps",
-    "location": "Living Room",
-    "status": true,
-    "brightness": 23,
-    "color": "#ffffff"
-  },
-  {
     "id": "1764914798559",
     "name": "Orange lamp",
     "category": "lamps",

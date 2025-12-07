@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1765144102364",
+    "name": "Good night routine",
+    "time": "10:00",
+    "selectedDevices": [
+      "1764913821348",
+      "1764913832423",
+      "1764914798559"
+    ],
+    "action": "turn_off",
+    "isActive": true
+  },
+  {
+    "id": "1765144130225",
+    "name": "hi",
+    "time": "08:01",
+    "selectedDevices": [
+      "1764913821348"
+    ],
+    "action": "turn_on",
+    "isActive": true
+  },
+  {
+    "id": "1765144148965",
+    "name": "sasasa",
+    "time": "09:00",
+    "selectedDevices": [
+      "1764907835304"
+    ],
+    "action": "turn_on",
+    "isActive": true
+  }
+]
