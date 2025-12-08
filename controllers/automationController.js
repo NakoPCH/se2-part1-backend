@@ -11,13 +11,18 @@ const getAutomationsFromFile = () => {
     const data = fs.readFileSync(DATA_FILE, "utf8");
     return JSON.parse(data);
   } catch (error) {
+    console.error("Error reading file:", error);
     return [];
   }
 };
 
 // Helper: Write to file
 const saveAutomationsToFile = (data) => {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.error("Error writing file:", error);
+  }
 };
 
 // GET /automations
@@ -39,9 +44,9 @@ export const createAutomation = (req, res) => {
   const newAutomation = {
     id: Date.now().toString(),
     name,
-    time, // e.g., "19:00"
-    selectedDevices, // Array of Device IDs
-    action, // "turn_on" or "turn_off"
+    time, 
+    selectedDevices, 
+    action, 
     isActive: true
   };
 
@@ -55,24 +60,49 @@ export const createAutomation = (req, res) => {
 export const deleteAutomation = (req, res) => {
   const { id } = req.params;
   let automations = getAutomationsFromFile();
+  
+  // Filter out the rule with the matching ID
   automations = automations.filter(a => a.id !== id);
+  
   saveAutomationsToFile(automations);
   res.json({ message: "Deleted" });
 };
 
-// PUT /automations/:id (Toggle Active/Inactive)
-export const toggleAutomation = (req, res) => {
+// PUT /automations/:id 
+// (Renamed from toggleAutomation to updateAutomation because it handles everything)
+export const updateAutomation = (req, res) => {
   const { id } = req.params;
-  const { isActive } = req.body;
+  const updates = req.body; 
+
+  console.log(`[UPDATE] Request received for ID: ${id}`);
+  console.log(`[UPDATE] Data received:`, updates);
+
+  // Safety Check: If body is empty, stop here.
+  if (!updates || Object.keys(updates).length === 0) {
+    console.log("[UPDATE] Error: No data received in body");
+    return res.status(400).json({ error: "No update data provided" });
+  }
   
   const automations = getAutomationsFromFile();
   const index = automations.findIndex(a => a.id === id);
   
   if (index !== -1) {
-    automations[index].isActive = isActive;
+    // Merge existing data with new updates
+    // We strictly preserve the original ID to prevent it from being overwritten
+    const updatedRule = { 
+        ...automations[index], 
+        ...updates,
+        id: automations[index].id 
+    };
+
+    automations[index] = updatedRule;
+    
     saveAutomationsToFile(automations);
-    res.json(automations[index]);
+    console.log("[UPDATE] Success. Updated Rule saved.");
+    
+    res.json(updatedRule);
   } else {
+    console.log(`[UPDATE] Error: Rule with ID ${id} not found.`);
     res.status(404).json({ error: "Not found" });
   }
 };

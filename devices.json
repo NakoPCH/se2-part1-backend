@@ -9,15 +9,6 @@
     "color": "#ffffff"
   },
   {
-    "id": "1764913821348",
-    "name": "Living room light",
-    "category": "lamps",
-    "location": "Living Room",
-    "status": true,
-    "brightness": 100,
-    "color": "#ffffff"
-  },
-  {
     "id": "1764913832423",
     "name": "Banana light",
     "category": "lamps",
@@ -31,6 +22,24 @@
     "name": "Orange lamp",
     "category": "lamps",
     "location": "Kitchen",
+    "status": false,
+    "brightness": 100,
+    "color": "#ffffff"
+  },
+  {
+    "id": "1765150594193",
+    "name": "sasasa",
+    "category": "lamps",
+    "location": "Living Room",
+    "status": true,
+    "brightness": 29,
+    "color": "#ffffff"
+  },
+  {
+    "id": "1765150659979",
+    "name": "brabra",
+    "category": "lamps",
+    "location": "Living Room",
     "status": false,
     "brightness": 100,
     "color": "#ffffff"
