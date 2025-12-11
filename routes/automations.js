@@ -1,17 +1,16 @@
-// routes/automations.js
-
 import express from "express";
-import { createAutomationController } from "../controllers/automationController.js";
-import { basicAuth } from "../middleware/auth.js";
-import { requireFields } from "../middleware/validation.js";
+import { 
+  getAutomations, 
+  createAutomation, 
+  deleteAutomation, 
+  updateAutomation 
+} from "../controllers/automationController.js";
 
 const router = express.Router();
 
-router.post(
-  "/automations",
-  basicAuth,
-  requireFields(["name", "rules"]),
-  createAutomationController
-);
+router.get("/automations", getAutomations);
+router.post("/automations", createAutomation);
+router.delete("/automations/:id", deleteAutomation);
+router.put("/automations/:id", updateAutomation); 
 
 export default router;
