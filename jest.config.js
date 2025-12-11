@@ -16,6 +16,7 @@ export default {
   },
   
   collectCoverage: true,
+  modulePathIgnorePatterns: ["<rootDir>/se2-part1-backend-main/"],
   coveragePathIgnorePatterns: [
     "/node_modules/",
     "/config/",
