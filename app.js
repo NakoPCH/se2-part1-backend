@@ -4,6 +4,7 @@ import cors from 'cors';
 import express from "express";
 import bodyParser from "body-parser";
 import lightingRoutes from "./routes/lightingRoutes.js";
+import automationRoutes from "./routes/automations.js";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import { logger } from "./middleware/logger.js";
@@ -23,6 +24,7 @@ app.use(logger);
 app.use(bodyParser.json());
 
 app.use("/api/lighting", lightingRoutes);
+app.use("/api", automationRoutes);
 // Health check
 app.get("/health", (req, res) => {
   res.status(200).json({ success: true, data: null, error: null, message: "Healthy" });

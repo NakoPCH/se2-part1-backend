@@ -8,6 +8,7 @@ import roomRoutes from "./rooms.js";
 import deviceRoutes from "./devices.js";
 import automationRoutes from "./automations.js";
 import scenarioRoutes from "./scenarios.js";
+import { getShortcuts, saveShortcuts } from "../controllers/shortcutController.js";
 
 const router = express.Router();
 
@@ -19,5 +20,8 @@ router.use("/", roomRoutes); // contains /houses/:houseId/rooms and /rooms/...
 router.use("/", deviceRoutes); // contains /rooms/:roomId/devices and /devices/... etc.
 router.use("/", automationRoutes);
 router.use("/", scenarioRoutes);
+
+router.get("/shortcuts", getShortcuts);
+router.post("/shortcuts", saveShortcuts);
 
 export default router;

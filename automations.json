@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1765496726623",
+    "name": "Good Morning Rule",
+    "time": "07:00",
+    "selectedDevices": [
+      "1765496017844",
+      "1765496032139",
+      "1765496069403"
+    ],
+    "action": "turn_on",
+    "isActive": true
+  }
+]
