@@ -49,7 +49,6 @@ jobs:
     
     steps:
       - name: Deploy to Render
-        # Εδώ θα χρησιμοποιήσουμε ένα απλό curl request στο Deploy Hook του Render
-        # Θα πρέπει να ορίσεις το RENDER_DEPLOY_HOOK στα GitHub Secrets αργότερα
+      
         if: success()
         run: curl "${{ secrets.RENDER_DEPLOY_HOOK }}"
