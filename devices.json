@@ -5,12 +5,12 @@
     "category": "lamps",
     "location": "Kitchen",
     "status": true,
-    "brightness": 50,
+    "brightness": 45,
     "color": "#ffffff"
   },
   {
     "id": "1765495290435",
-    "name": "ac1",
+    "name": "AC1",
     "category": "acs",
     "location": "Living Room",
     "status": false,
@@ -19,21 +19,12 @@
   },
   {
     "id": "1765495295452",
-    "name": "ac2",
+    "name": "AC2",
     "category": "acs",
     "location": "Bedroom",
     "status": false,
     "temperature": 20,
     "fanSpeed": "low"
-  },
-  {
-    "id": "1765495564740",
-    "name": "thermostat",
-    "category": "thermostats",
-    "location": "Bedroom",
-    "currentTemp": 21,
-    "targetTemp": 24,
-    "mode": "heat"
   },
   {
     "id": "1765496017844",
@@ -67,7 +58,7 @@
     "name": "Red Lamp",
     "category": "lamps",
     "location": "Bedroom",
-    "status": false,
+    "status": true,
     "brightness": 10,
     "color": "#ffffff"
   },
