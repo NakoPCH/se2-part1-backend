@@ -1,0 +1,50 @@
+name: Node.js CI/CD Pipeline
+
+# Πότε θα τρέχει το pipeline;
+on:
+  push:
+    branches: [ "main" ] # Όταν κάνεις push στο main
+  pull_request:
+    branches: [ "main" ] # Όταν ανοίγεις Pull Request προς το main
+
+jobs:
+  # Job 1: Build & Test (Ο Έλεγχος)
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x] # Τρέχουμε σε Node v18 (άλλαξέ το αν θες v20)
+
+    steps:
+    - uses: actions/checkout@v4 # Κατεβάζει τον κώδικά σου
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci # Καθαρή εγκατάσταση βιβλιοθηκών (πιο γρήγορο από npm install)
+      
+    - name: Run Tests with Coverage
+      run: npm run test:coverage # Τρέχει τα tests που φτιάξαμε
+      
+    # Αν τα tests αποτύχουν, το pipeline σταματάει εδώ.
+
+  # Job 2: Deploy (Η Ενσωμάτωση)
+  deploy:
+    needs: test # Αυτό σημαίνει: "Μην τρέξεις αν δεν πετύχει το job 'test'"
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # Τρέχει μόνο αν είμαστε στο main branch (όχι σε PR)
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production server..."
+          # Εδώ μπαίνουν οι εντολές για το πραγματικό deploy (π.χ. Heroku, Render, AWS)
+          # Προς το παρόν βάζουμε ένα mock μήνυμα.
+          echo "Deployment successful!"
