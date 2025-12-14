@@ -21,4 +21,3 @@ Node.js/Express backend for a smart home system. Supports both MongoDB (optional
 - MongoDB + Mongoose (optional)
 - Helmet, Morgan
 
-## Getting Started
