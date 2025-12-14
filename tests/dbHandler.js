@@ -1,29 +1,44 @@
-// __tests__/dbHandler.js
-
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 
-let mongo;
+let mongod;
 
+/**
+ * Connect to the in-memory database.
+ */
 export const connect = async () => {
-  mongo = await MongoMemoryServer.create();
-  const uri = mongo.getUri();
-  await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  // Αυξάνουμε το timeout για τη σύνδεση
+  if (mongod) return; // Αν υπάρχει ήδη σύνδεση, μην ξαναπροσπαθείς
+  
+  mongod = await MongoMemoryServer.create();
+  const uri = mongod.getUri();
+
+  // Χρησιμοποιούμε το mongoose.connect χωρίς deprecated options
+  await mongoose.connect(uri);
 };
 
+/**
+ * Drop database, close the connection and stop mongod.
+ */
 export const closeDatabase = async () => {
-  if (mongo) {
+  if (mongoose.connection.readyState !== 0) {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
-    await mongo.stop();
+  }
+  if (mongod) {
+    await mongod.stop();
   }
 };
 
+/**
+ * Remove all the data for all db collections.
+ */
 export const clearDatabase = async () => {
-  if (mongoose.connection.collections) {
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-      await collections[key].deleteMany(); 
-    }
+  const collections = mongoose.connection.collections;
+
+  for (const key in collections) {
+    const collection = collections[key];
+    // ΔΙΟΡΘΩΣΗ: Προσθέσαμε το {} μέσα στο deleteMany
+    await collection.deleteMany({});
   }
 };
