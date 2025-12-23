@@ -61,7 +61,7 @@ jobs:
       - name: Start Backend
         run: |
           npm start &
-          sleep 15
+          sleep 30
         env:
           MONGO_URI: mongodb://localhost:27017/test_db
           JWT_SECRET: test_secret
