@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, elefkapo ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, elefkapo ]
 
 jobs:
   # Job 1: Testing
