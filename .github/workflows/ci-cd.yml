@@ -7,7 +7,6 @@ on:
     branches: [ main, master, elefkapo ]
 
 jobs:
-  # Job 1: Testing
   test:
     runs-on: ubuntu-latest
     services:
@@ -40,7 +39,6 @@ jobs:
         MONGO_URI: mongodb://localhost:27017/test_db
         JWT_SECRET: test_secret
 
-  # Job 2: Performance Testing
   performance:
     needs: test
     runs-on: ubuntu-latest
@@ -59,16 +57,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Install k6 natively
+      - name: Install k6 (Direct Binary)
         run: |
-          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/bin/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-          sudo apt-get update
-          sudo apt-get install k6
+          curl -L https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz | tar -xz
+          # This moves the k6 executable to a folder already in the system PATH
+          sudo mv k6-v0.47.0-linux-amd64/k6 /usr/local/bin/k6
+          # Verify installation
+          k6 version
 
       - name: Start Backend
         run: |
           npm start &
+          # npx wait-on is the most reliable way to prevent "Connection Refused"
           npx wait-on http://127.0.0.1:5050/api/lighting/devices --timeout 60000
         env:
           MONGO_URI: mongodb://localhost:27017/test_db
@@ -82,12 +82,10 @@ jobs:
           k6 run performance-tests/load_rooms.js
           k6 run performance-tests/spike_rooms.js
 
-  # Job 3: Deploy
   deploy:
-    needs: [test, performance] # Ensure performance tests also pass
+    needs: [test, performance]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    
     steps:
       - name: Deploy to Render
         run: curl "${{ secrets.RENDER_DEPLOY_HOOK }}"
