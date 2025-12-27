@@ -72,21 +72,25 @@ jobs:
         uses: grafana/k6-action@v0.3.1
         with:
           filename: performance-tests/load_devices.js
+          flags: --add-host=localhost:host-gateway
 
       - name: Spike Test Devices
         uses: grafana/k6-action@v0.3.1
         with:
           filename: performance-tests/spike_devices.js
+          flags: --add-host=localhost:host-gateway
 
       - name: Load Test Rooms
         uses: grafana/k6-action@v0.3.1
         with:
           filename: performance-tests/load_rooms.js
+          flags: --add-host=localhost:host-gateway
 
       - name: Spike Test Rooms
         uses: grafana/k6-action@v0.3.1
         with:
           filename: performance-tests/spike_rooms.js
+          flags: --add-host=localhost:host-gateway
 
   # Job 2: Deploy
   deploy:
