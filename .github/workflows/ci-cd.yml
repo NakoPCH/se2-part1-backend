@@ -10,7 +10,6 @@ jobs:
   # Job 1: Testing
   test:
     runs-on: ubuntu-latest
-
     services:
       mongodb:
         image: mongo:6.0
@@ -40,9 +39,10 @@ jobs:
       env:
         MONGO_URI: mongodb://localhost:27017/test_db
         JWT_SECRET: test_secret
-# 2. ΤΟ ΝΕΟ JOB ΓΙΑ PERFORMANCE (Συνδυασμένο)
+
+  # Job 2: Performance Testing
   performance:
-    needs: test # Περιμένει να περάσουν τα απλά tests
+    needs: test
     runs-on: ubuntu-latest
     services:
       mongodb:
@@ -51,6 +51,7 @@ jobs:
           - 27017:27017
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -58,47 +59,35 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Install k6 natively
+        run: |
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/bin/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+
       - name: Start Backend
         run: |
           npm start &
-          sleep 30
+          npx wait-on http://127.0.0.1:5050/api/lighting/devices --timeout 60000
         env:
           MONGO_URI: mongodb://localhost:27017/test_db
           JWT_SECRET: test_secret
           PORT: 5050
 
-      # Τα 4 τεστ που θέλεις:
-      - name: Load Test Devices
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: performance-tests/load_devices.js
-          flags: --add-host=localhost:host-gateway
+      - name: Run Performance Tests
+        run: |
+          k6 run performance-tests/load_devices.js
+          k6 run performance-tests/spike_devices.js
+          k6 run performance-tests/load_rooms.js
+          k6 run performance-tests/spike_rooms.js
 
-      - name: Spike Test Devices
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: performance-tests/spike_devices.js
-          flags: --add-host=localhost:host-gateway
-
-      - name: Load Test Rooms
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: performance-tests/load_rooms.js
-          flags: --add-host=localhost:host-gateway
-
-      - name: Spike Test Rooms
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: performance-tests/spike_rooms.js
-          flags: --add-host=localhost:host-gateway
-
-  # Job 2: Deploy
+  # Job 3: Deploy
   deploy:
-    needs: test
+    needs: [test, performance] # Ensure performance tests also pass
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     
     steps:
       - name: Deploy to Render
-        if: success()
         run: curl "${{ secrets.RENDER_DEPLOY_HOOK }}"
