@@ -3,9 +3,9 @@ import { check, sleep } from 'k6';
 
 export const options = {
   stages: [
-    { duration: '1m', target: 200 }, // Ανέβηκε στους 200 χρήστες (από 20)
-    { duration: '1m', target: 400 }, // Κράτα τους 400 χρήστες
-    { duration: '30s', target: 0 },
+    { duration: '40s', target: 200 }, // Ανέβηκε στους 200 χρήστες (από 20)
+    { duration: '40s', target: 400 }, // Κράτα τους 400 χρήστες
+    { duration: '20s', target: 0 },
   ],
   thresholds: {
     // Πολύ αυστηρό: το 95% των αιτημάτων να απαντά σε < 200ms 
