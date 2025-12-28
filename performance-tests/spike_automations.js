@@ -16,7 +16,7 @@ export const options = {
 
 export default function () {
   // ΑΛΛΑΞΕ ΤΟ: Βάλε το δεύτερο route σου εδώ
-  const BASE_URL = 'http://127.0.0.1:5050/api/lighting/rooms';
+  const BASE_URL = 'http://127.0.0.1:5050/api/automations';
   const res = http.get(BASE_URL);
   
   check(res, {

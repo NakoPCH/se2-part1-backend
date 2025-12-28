@@ -17,7 +17,7 @@ export const options = {
 };
 
 export default function () {
-  const url = 'http://127.0.0.1:5050/api/lighting/rooms';
+  const url = 'http://127.0.0.1:5050/api/automations';
   const res = http.get(url);
 
   check(res, {
