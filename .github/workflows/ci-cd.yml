@@ -78,10 +78,10 @@ jobs:
 
       - name: Run Performance Tests
         run: |
-          k6 run performance-tests/load_devices.js
-          k6 run performance-tests/spike_devices.js
-          k6 run performance-tests/load_rooms.js
-          k6 run performance-tests/spike_rooms.js
+          k6 run performance-tests/load_lighting_devices.js
+          k6 run performance-tests/spike_lighting_devices.js
+          k6 run performance-tests/load_automations.js
+          k6 run performance-tests/spike_automations.js
 
   deploy:
     needs: [test, performance]
