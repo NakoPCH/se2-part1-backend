@@ -3,8 +3,8 @@ import { check, sleep } from 'k6';
 
 export const options = {
   stages: [
-    { duration: '10s', target: 300 }, // Απότομη άνοδος σε 100 χρήστες (Spike!)
-    { duration: '1m', target: 300 },  // Κράτα τους 100 για 1 λεπτό
+    { duration: '10s', target: 300 }, // Απότομη άνοδος σε 300 χρήστες (Spike!)
+    { duration: '1m', target: 300 },  // Κράτα τους 300 για 1 λεπτό
     { duration: '10s', target: 0 },   // Απότομη πτώση
   ],
   thresholds: {
@@ -16,8 +16,8 @@ export const options = {
 
 export default function () {
   // ΑΛΛΑΞΕ ΤΟ: Βάλε το δεύτερο route σου εδώ
-  const BASE_URL = 'http://localhost:5050';
-  const res = http.get(`${BASE_URL}/api/lighting/devices`);
+  const BASE_URL = 'http://127.0.0.1:5050/api/lighting/devices';
+  const res = http.get(BASE_URL);
   
   check(res, {
     'status is 200': (r) => r.status === 200,

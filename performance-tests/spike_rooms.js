@@ -16,8 +16,8 @@ export const options = {
 
 export default function () {
   // ΑΛΛΑΞΕ ΤΟ: Βάλε το δεύτερο route σου εδώ
-  const BASE_URL = 'http://localhost:5050';
-  const res = http.get(`${BASE_URL}/api/lighting/rooms`);
+  const BASE_URL = 'http://127.0.0.1:5050/api/lighting/rooms';
+  const res = http.get(BASE_URL);
   
   check(res, {
     'status is 200': (r) => r.status === 200,
