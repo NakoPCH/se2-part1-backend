@@ -64,7 +64,17 @@ jobs:
           sudo mv k6-v0.47.0-linux-amd64/k6 /usr/local/bin/k6
           # Verify installation
           k6 version
-    
+
+      - name: Start Backend
+        run: |
+          npm start &
+          # npx wait-on is the most reliable way to prevent "Connection Refused"
+          npx wait-on http://127.0.0.1:5050/api/lighting/devices --timeout 60000
+        env:
+          MONGO_URI: mongodb://localhost:27017/test_db
+          JWT_SECRET: test_secret
+          PORT: 5050
+      
 
       - name: Run Performance Tests
         run: |
