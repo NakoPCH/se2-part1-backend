@@ -2,15 +2,13 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, elefkapo ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, elefkapo ]
 
 jobs:
-  # Job 1: Testing
   test:
     runs-on: ubuntu-latest
-
     services:
       mongodb:
         image: mongo:6.0
@@ -41,13 +39,54 @@ jobs:
         MONGO_URI: mongodb://localhost:27017/test_db
         JWT_SECRET: test_secret
 
-  # Job 2: Deploy
-  deploy:
+  performance:
     needs: test
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install k6 (Direct Binary)
+        run: |
+          curl -L https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz | tar -xz
+          # This moves the k6 executable to a folder already in the system PATH
+          sudo mv k6-v0.47.0-linux-amd64/k6 /usr/local/bin/k6
+          # Verify installation
+          k6 version
+
+      - name: Start Backend
+        run: |
+          npm start &
+          # npx wait-on is the most reliable way to prevent "Connection Refused"
+          npx wait-on http://127.0.0.1:5050/api/lighting/devices --timeout 60000
+        env:
+          MONGO_URI: mongodb://localhost:27017/test_db
+          JWT_SECRET: test_secret
+          PORT: 5050
+      
+
+      - name: Run Performance Tests
+        run: |
+          k6 run performance-tests/load_lighting_devices.js
+          k6 run performance-tests/spike_lighting_devices.js
+          k6 run performance-tests/load_automations.js
+          k6 run performance-tests/spike_automations.js
+
+  deploy:
+    needs: [test, performance]
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    
     steps:
       - name: Deploy to Render
-        if: success()
         run: curl "${{ secrets.RENDER_DEPLOY_HOOK }}"
