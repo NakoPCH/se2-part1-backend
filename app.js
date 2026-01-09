@@ -1,5 +1,3 @@
-// app.js
-
 import cors from 'cors';
 import express from "express";
 import bodyParser from "body-parser";
@@ -25,8 +23,10 @@ app.use(bodyParser.json());
 
 app.use("/api/lighting", lightingRoutes);
 app.use("/api", automationRoutes);
+
 // Health check
-app.get("/health", (req, res) => {
+// ΔΙΟΡΘΩΣΗ: Αλλάξαμε το (req, res) σε (_, res) γιατί το req δεν χρησιμοποιείται
+app.get("/health", (_, res) => {
   res.status(200).json({ success: true, data: null, error: null, message: "Healthy" });
 });
 
@@ -34,7 +34,10 @@ app.get("/health", (req, res) => {
 app.use("/api", apiRoutes);
 
 // 404 handler for unknown routes
-app.use((req, res, next) => {
+// ΔΙΟΡΘΩΣΗ: 
+// 1. Αλλάξαμε το req σε _ (γιατί δεν χρησιμοποιείται)
+// 2. Σβήσαμε τελείως το 'next' από το τέλος (γιατί δεν χρησιμοποιείται)
+app.use((_, res) => {
   res.status(404).json({
     success: false,
     data: null,

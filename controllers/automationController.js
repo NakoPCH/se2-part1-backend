@@ -26,7 +26,8 @@ const saveAutomationsToFile = (data) => {
 };
 
 // GET /automations
-export const getAutomations = (req, res) => {
+// ΔΙΟΡΘΩΣΗ: Αλλάξαμε το (req, res) σε (_, res)
+export const getAutomations = (_, res) => {
   const automations = getAutomationsFromFile();
   res.json(automations);
 };
