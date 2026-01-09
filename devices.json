@@ -4,8 +4,8 @@
     "name": "Banana light",
     "category": "lamps",
     "location": "Kitchen",
-    "status": true,
-    "brightness": 45,
+    "status": false,
+    "brightness": 48,
     "color": "#ffffff"
   },
   {
@@ -41,7 +41,7 @@
     "category": "lamps",
     "location": "Living Room",
     "status": true,
-    "brightness": 100,
+    "brightness": 36,
     "color": "#ffffff"
   },
   {

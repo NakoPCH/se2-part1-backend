@@ -15,15 +15,17 @@ const getShortcutsFromFile = () => {
 };
 
 // GET /api/shortcuts
-export const getShortcuts = (req, res) => {
+// ΔΙΟΡΘΩΣΗ: Αλλάξαμε το (req, res) σε (_, res)
+export const getShortcuts = (_, res) => {
   const shortcuts = getShortcutsFromFile();
   res.json(shortcuts);
 };
 
 // POST /api/shortcuts (Save the entire list of IDs)
+// ΕΔΩ ΔΕΝ ΑΛΛΑΖΟΥΜΕ ΤΙΠΟΤΑ (Το req χρησιμοποιείται στο req.body)
 export const saveShortcuts = (req, res) => {
   const newShortcuts = req.body; // Expecting array: [{ id: "123", type: "device" }, ...]
-  
+   
   try {
     fs.writeFileSync(DATA_FILE, JSON.stringify(newShortcuts, null, 2));
     res.json({ success: true, shortcuts: newShortcuts });

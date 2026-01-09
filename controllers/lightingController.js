@@ -25,15 +25,18 @@ const saveDevicesToFile = (devices) => {
 // --- CONTROLLER FUNCTIONS ---
 
 // GET /rooms (New!)
-export function getRooms(req, res) {
+// ΔΙΟΡΘΩΣΗ: Αλλάξαμε το (req, res) σε (_, res)
+export function getRooms(_, res) {
   res.json(VALID_ROOMS);
 }
 
-export function listDevices(req, res) {
+// ΔΙΟΡΘΩΣΗ: Αλλάξαμε το (req, res) σε (_, res)
+export function listDevices(_, res) {
   const devices = getDevicesFromFile();
   res.json(devices);
 }
 
+// ΕΔΩ ΔΕΝ ΑΛΛΑΖΟΥΜΕ ΤΙΠΟΤΑ (Το req χρησιμοποιείται στο req.body)
 export function addDevice(req, res) {
   const { name, category, location } = req.body;
   if (!name || !category || !location) {
@@ -64,6 +67,7 @@ export function addDevice(req, res) {
   res.status(201).json(newDevice);
 }
 
+// ΕΔΩ ΔΕΝ ΑΛΛΑΖΟΥΜΕ ΤΙΠΟΤΑ (Το req χρησιμοποιείται στο req.params και req.body)
 export function updateDevice(req, res) {
   const { id } = req.params;
   const updates = req.body;
@@ -78,6 +82,7 @@ export function updateDevice(req, res) {
 }
 
 // DELETE /devices/:id (New!)
+// ΕΔΩ ΔΕΝ ΑΛΛΑΖΟΥΜΕ ΤΙΠΟΤΑ (Το req χρησιμοποιείται στο req.params)
 export function deleteDevice(req, res) {
   const { id } = req.params;
   let devices = getDevicesFromFile();
