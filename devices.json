@@ -4,7 +4,7 @@
     "name": "Banana light",
     "category": "lamps",
     "location": "Kitchen",
-    "status": false,
+    "status": true,
     "brightness": 48,
     "color": "#ffffff"
   },
@@ -31,7 +31,7 @@
     "name": "Ceiling Light Bedroom",
     "category": "lamps",
     "location": "Bedroom",
-    "status": false,
+    "status": true,
     "brightness": 100,
     "color": "#ffffff"
   },
@@ -58,13 +58,22 @@
     "name": "Red Lamp",
     "category": "lamps",
     "location": "Bedroom",
-    "status": true,
+    "status": false,
     "brightness": 10,
     "color": "#ffffff"
   },
   {
     "id": "1765496069403",
     "name": "Ceiling Light Kitchen",
+    "category": "lamps",
+    "location": "Kitchen",
+    "status": false,
+    "brightness": 100,
+    "color": "#ffffff"
+  },
+  {
+    "id": "1767972651170",
+    "name": "124",
     "category": "lamps",
     "location": "Kitchen",
     "status": false,
